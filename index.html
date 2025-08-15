@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia TikTok – TUTU - MUNEQUITA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Minimalist Neutral -->
+    <!-- Application Structure Plan: La SPA se ha modificado para centrarse en dos estrategias principales: Lip Sync y Transiciones. La estructura mantiene una arquitectura de panel de control de desplazamiento, pero con un enfoque más directo. Se ha simplificado la sección de "Contexto" para eliminar datos redundantes y se han reestructurado las "Estrategias Detalladas" en un explorador de dos pestañas. Esta versión es más ágil y va directamente a lo que le importa al cliente: el qué y el cómo de la estrategia, manteniendo solo la información de mercado más relevante. -->
+    <!-- Visualization & Content Choices: 1. Plataformas Preferidas: Report Info -> Bar chart of music discovery platforms. Goal -> Informar de manera concisa. Viz/Presentation Method -> Chart.js Bar Chart. Interaction -> Tooltip on hover. Justification -> Establece rápidamente la relevancia de TikTok. Library/Method -> Chart.js. 2. Estrategias (Lip Sync, Transiciones): Report Info -> Tasas de éxito. Goal -> Comparar y organizar. Viz/Presentation Method -> Pestañas interactivas con Chart.js Bar Chart. Interaction -> Al hacer clic en la pestaña, se muestra el contenido y se actualiza el gráfico. Justification -> Permite una comparación visual directa y enfocada. Library/Method -> Vanilla JS, Chart.js. 3. Gemini API Features: Report Info -> Generar contenido para la campaña. Goal -> Crear valor y demostrar capacidad. Viz/Presentation Method -> Botones interactivos que llaman a la API para generar texto (guion, caption) y audio (TTS). Interaction -> Click para generar y mostrar/reproducir contenido. Justification -> Demuestra la capacidad de LPP Media para usar IA en la creación de contenido, añadiendo un "wow" factor a la propuesta. Library/Method -> Gemini API, Vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #1a1a1a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #c8a2c8;
+        }
+        .tab-btn.active {
+            background-color: #1a1a1a;
+            color: #f8f7f4;
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="home" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="h-10 w-40">
+                <a href="#home">
+                    <img src="https://i.postimg.cc/BvTT94yd/isotipo-media.png" alt="Logo de LPP Media" class="h-full">
+                </a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#contexto" class="nav-link font-semibold text-gray-700">Contexto</a>
+                <a href="#estrategias" class="nav-link font-semibold text-gray-700">Estrategias</a>
+                <a href="#influencers" class="nav-link font-semibold text-gray-700">Influencers</a>
+                <a href="#llamada" class="nav-link font-semibold text-gray-700">Llamada a la Acción</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tighter mb-4">Propuesta Viral TikTok</h1>
+                <h2 class="text-2xl md:text-4xl font-semibold text-gray-700 mb-8">Lanzamiento "Munequita" - Tutu</h2>
+                <p class="max-w-2xl mx-auto text-lg text-gray-600">3 estrategias para generar miles de réplicas y alcance masivo.</p>
+                <div class="mt-12 w-full max-w-xl mx-auto">
+                    <img src="https://i.postimg.cc/L4JQZZZD/ab6761610000e5ebc7419920bcda212c74c9034f.jpg" alt="Imagen del artista" class="w-full rounded-lg shadow-xl">
+                </div>
+            </div>
+        </section>
+
+        <section id="contexto" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold tracking-tighter">Datos Clave</h3>
+                    <p class="text-lg text-gray-600 mt-2">Plataformas preferidas para el descubrimiento musical en 2025.</p>
+                </div>
+                <div class="max-w-xl mx-auto">
+                    <div class="chart-container">
+                        <canvas id="plataformasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estrategias" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold tracking-tighter">Estrategias Virales Detalladas</h3>
+                    <p class="text-lg text-gray-600 mt-2">Haz clic para explorar cada táctica y su tasa de éxito.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-8 flex justify-center rounded-lg p-2 bg-gray-200 space-x-2">
+                        <button class="tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-center active" data-tab="lip-sync">1. Lip Sync</button>
+                        <button class="tab-btn flex-1 py-2 px-4 rounded-md font-semibold text-center" data-tab="transicion">2. Transiciones</button>
+                    </div>
+
+                    <div id="tab-content" class="bg-white p-8 rounded-lg shadow-lg">
+                        <div id="lip-sync" class="tab-pane active">
+                            <div class="grid md:grid-cols-2 gap-8 items-start">
+                                <div>
+                                    <h4 class="text-2xl font-bold mb-4">Lip Sync</h4>
+                                    <p class="mb-4 text-gray-600">Esta estrategia busca atraer a chicas guapas para que realicen un lip sync de la canción. Este formato tiene una tasa de éxito del 58% y es ideal para impulsar el audio de forma masiva.</p>
+                                    <div class="chart-container mb-6">
+                                        <canvas id="successChart"></canvas>
+                                    </div>
+                                    <div class="flex space-x-4 mb-4">
+                                        <div id="lip-sync-output" class="bg-gray-100 p-4 rounded-lg text-gray-700 hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <h5 class="font-semibold text-xl mb-2">Guion Visual:</h5>
+                                    <img src="https://i.postimg.cc/SsSsvhcQ/vreckle-a-illustration-cover-for-a-choir-concert-with-a-female-33e56dd1-3815-422c-9155-e634a0d67dcc.png" alt="Ilustración de una chica cantando" class="rounded-lg shadow-md w-full h-auto object-cover">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="transicion" class="tab-pane hidden">
+                            <div class="grid md:grid-cols-2 gap-8 items-start">
+                                <div>
+                                    <h4 class="text-2xl font-bold mb-4">Transiciones de antes y después con filtro de CapCut</h4>
+                                    <p class="mb-4 text-gray-600">El formato de transiciones tiene una tasa de éxito del 72% y es perfecto para captar la atención. Usaremos filtros de CapCut para crear un contraste visual de "antes y después" de un look casual a uno más glamuroso.</p>
+                                    <div class="chart-container mb-6">
+                                        <canvas id="successChartTransicion"></canvas>
+                                    </div>
+                                    <div class="flex space-x-4 mb-4">
+                                        <div id="transicion-output" class="bg-gray-100 p-4 rounded-lg text-gray-700 hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                     <h5 class="font-semibold text-xl mb-2">Guion Visual:</h5>
+                                    <img src="https://i.postimg.cc/WpJ3YXkk/tutu.jpg" alt="Transición de antes y después con un filtro de CapCut" class="rounded-lg shadow-md w-full h-auto object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="influencers" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold tracking-tighter">Perfiles de Influencers Sugeridos</h3>
+                    <p class="text-lg text-gray-600 mt-2">Perfiles ideales basados en la demografía de usuarios de TikTok (25-34 años).</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
+                     <div>
+                        <h4 class="text-2xl font-bold mb-4">Demografía de Usuarios de TikTok (2025)</h4>
+                        <div class="chart-container">
+                            <canvas id="demografiaChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@soynatt___</h5>
+                            <p class="text-sm text-gray-600">980K seguidores</p>
+                            <p class="text-sm text-gray-600">México</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@andreajpp1</h5>
+                            <p class="text-sm text-gray-600">1.5M seguidores</p>
+                            <p class="text-sm text-gray-600">Colombia</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@angelinanarva</h5>
+                            <p class="text-sm text-gray-600">2.1M seguidores</p>
+                            <p class="text-sm text-gray-600">España</p>
+                        </div>
+                         <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@jiialegarciia</h5>
+                            <p class="text-sm text-gray-600">550K seguidores</p>
+                            <p class="text-sm text-gray-600">Argentina</p>
+                        </div>
+                         <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@karito_minion__</h5>
+                            <p class="text-sm text-gray-600">3.5M seguidores</p>
+                            <p class="text-sm text-gray-600">Colombia</p>
+                        </div>
+                         <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <h5 class="font-bold text-lg mb-1">@valeryychaires</h5>
+                            <p class="text-sm text-gray-600">800K seguidores</p>
+                            <p class="text-sm text-gray-600">México</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="llamada" class="py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold tracking-tighter mb-4">Guía de Colaboración para Influencers</h3>
+                <p class="max-w-2xl mx-auto text-lg text-gray-600">
+                    Bienvenido/a al equipo. Esta es tu guía para crear el contenido viral de "Muñequita".
+                    Tu misión es usar tu creatividad y carisma para generar un video que enganche a tu audiencia
+                    e impulse el audio en TikTok. A continuación, encontrarás los pasos para cada una de las dos estrategias.
+                </p>
+                <div class="mt-12 text-left">
+                    <h4 class="text-2xl font-bold mb-4">Estrategia 1: Lip Sync 🎤</h4>
+                    <p class="text-lg text-gray-600 mb-4">
+                        El objetivo es crear un video estéticamente atractivo y lleno de personalidad. Sigue estos pasos para un resultado exitoso:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 max-w-2xl mx-auto">
+                        <li>**Preparación:** Escoge un fondo limpio y con buena iluminación. Vístete con un look que represente tu estilo.</li>
+                        <li>**Grabación:** Graba el video con la cámara frontal para mantener un contacto visual directo con tus seguidores. Mueve los labios sincronizándolos perfectamente con el fragmento de la canción.</li>
+                        <li>**Actitud:** Mantén una expresión facial segura y coqueta. Transmite la emoción de la letra con tu mirada.</li>
+                        <li>**Publicación:** Utiliza el audio oficial y añade los hashtags sugeridos para maximizar el alcance.</li>
+                    </ul>
+                </div>
+                <div class="mt-12 text-left">
+                    <h4 class="text-2xl font-bold mb-4">Estrategia 2: Transiciones 🔄</h4>
+                    <p class="text-lg text-gray-600 mb-4">
+                        Esta táctica aprovecha un cambio visual dramático para sorprender a la audiencia. Sigue esta guía para crear un video viral de antes y después:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 max-w-2xl mx-auto">
+                        <li>**El "Antes":** Graba la primera parte del video con un look casual o de "estar en casa", sin maquillaje o con ropa simple.</li>
+                        <li>**La Transición:** En el punto clave de la música, utiliza un movimiento rápido (como tapar la cámara con la mano) para cortar la toma.</li>
+                        <li>**El "Después":** En la siguiente toma, revela un look completamente transformado: vestuario llamativo, maquillaje y un filtro de CapCut para darle un efecto "mágico".</li>
+                        <li>**Detalles Clave:** La sincronización con la música es fundamental. Usa el filtro de CapCut para que el cambio sea impactante y fluido.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="w-24 mx-auto mb-4">
+                 <img src="https://i.postimg.cc/BvTT94yd/isotipo-media.png" alt="Logo de LPP Media" class="h-full w-full">
+            </div>
+            <p class="text-2xl font-bold tracking-tighter">LPP Media</p>
+            <p class="text-lg mt-1">Viralizando con creatividad.</p>
+        </div>
+    </footer>
+
+    <script>
+        let successChartInstance = null;
+
+        const updateSuccessChart = (activeTab) => {
+            const chartData = {
+                labels: ['Tasa de Éxito (%)'],
+                datasets: [{
+                    label: 'Lip Sync',
+                    data: [58],
+                    backgroundColor: '#d4d4d4',
+                    borderColor: '#a3a3a3',
+                    borderWidth: 1
+                }, {
+                    label: 'Transiciones',
+                    data: [72],
+                    backgroundColor: '#d4d4d4',
+                    borderColor: '#a3a3a3',
+                    borderWidth: 1
+                }]
+            };
+
+            const backgroundColors = {
+                'lip-sync': ['#ef4444', '#d4d4d4'],
+                'transicion': ['#d4d4d4', '#ef4444']
+            };
+
+            chartData.datasets[0].backgroundColor = backgroundColors[activeTab][0];
+            chartData.datasets[1].backgroundColor = backgroundColors[activeTab][1];
+
+            if (successChartInstance) {
+                successChartInstance.data = chartData;
+                successChartInstance.update();
+            } else {
+                const ctx = document.getElementById('successChart').getContext('2d');
+                successChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    panes.forEach(pane => {
+                        pane.classList.add('hidden');
+                        if (pane.id === tab.dataset.tab) {
+                            pane.classList.remove('hidden');
+                        }
+                    });
+                    updateSuccessChart(tab.dataset.tab);
+                });
+            });
+
+            updateSuccessChart('lip-sync');
+            
+            const plataformasData = {
+                labels: ['TikTok', 'Spotify', 'YouTube', 'Instagram', 'Radio', 'Friends'],
+                datasets: [{
+                    label: 'Porcentaje de Preferencia (%)',
+                    data: [38, 30, 15, 10, 5, 2.5],
+                    backgroundColor: ['#ef4444', '#a3a3a3', '#d4d4d4', '#a3a3a3', '#d4d4d4', '#a3a3a3'],
+                    borderColor: ['#b91c1c', '#737373', '#a3a3a3', '#737373', '#a3a3a3', '#737373'],
+                    borderWidth: 1
+                }]
+            };
+            
+            const demografiaData = {
+                labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+                datasets: [{
+                    label: 'Porcentaje de Usuarios (%)',
+                    data: [30, 33, 15, 8, 7],
+                    backgroundColor: ['#ef4444', '#a3a3a3', '#d4d4d4', '#a3a3a3', '#d4d4d4'],
+                    borderColor: ['#b91c1c', '#737373', '#a3a3a3', '#737373', '#a3a3a3'],
+                    borderWidth: 1
+                }]
+            };
+
+            new Chart(document.getElementById('plataformasChart').getContext('2d'), {
+                type: 'bar',
+                data: plataformasData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+            
+            new Chart(document.getElementById('demografiaChart').getContext('2d'), {
+                type: 'bar',
+                data: demografiaData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
